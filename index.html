@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+<script src="./node_modules/axios/dist/axios.js"></script>
+<script type="module">
+  import { createApp } from 'https://unpkg.com/petite-vue?module'
+  import { axiosJWTHeader, axiosLoading, axiosPrevCancel, axiosRegistApi, axiosRetry, axiosCatchError } from './es/index.js'
+
+  // 自动加JWT Header
+  axiosJWTHeader(axios);
+
+  // 配置全局Loading （需要在单个请求中打开）
+  axiosLoading(axios, {
+    delay: 200,
+    tip: '全局的Loading',
+    handler: (isLoading, tip) => {
+      console.log(isLoading, tip)
+    }
+  })
+
+  // 注册请求重试插件
+  axiosRetry(axios);
+
+  // 注册取消上一个请求插件
+  axiosPrevCancel(axios);
+
+  // 注册异常捕获插件
+  axiosCatchError(axios, {
+    handler: (error) => {
+      // 全局处理
+      console.log('全局处理异常');
+      console.log(error);
+      // return Promise.reject(error);
+      return new Promise(() => {})
+    }
+  })
+
+  const apiConfig = {
+    getUser: 'get /user',
+    createUser: 'post /user',
+    deleteUser: 'delete /user'
+  }
+  // api 注册为函数
+  const apis = axiosRegistApi(axios, { apiConfig, prefix: '/api'});
+
+  console.log(apis)
+  // axios.defaults.timeout = 5;
+  window.localStorage.setItem('token', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c');
+
+  function App(props){
+    return {
+      count: props.count,
+      mounted(){
+        // axios.post('/api/posts',{}, {loading: true}).then(res => {
+        //   console.log(res)
+        // })
+
+        apis.getUser({ data: { id: 1}, loading: true }).then(res => {
+          console.log(res)
+        })
+
+        apis.deleteUser({ loading: {
+          tip: '自定义的Loading',
+          handler: (isLoading, tip) => {
+            console.log(isLoading, tip)
+          }
+        } }).then(res => {
+          console.log(res)
+        })
+        
+        // // 全局处理异常
+        // apis.deleteUser({ data: { id: 1} }).then(res => {
+        //   console.log(res)
+        // })
+        
+        // // 自己处理异常
+        // apis.deleteUser({ data: { id: 1} }).then(res => {
+        //   console.log(res)
+        // }).catch(error => {
+        //   console.log('自己处理异常')
+        //   console.log(error)
+        // })
+
+        // apis.createUser({ data: {name: '1111'} })
+
+        // axios.get('/api/user',{polling: {
+        //   delay: 5000,
+        // }}).then(res => {
+        //   console.log('polling')
+        //   console.log(res)
+        // })
+
+        // apis.getUser({ polling: {
+        //   delay: 10000
+        // }}).then(res => {
+        //   console.log('polling')
+        //   console.log(res);
+        // })
+          
+        // axios.get('/api/user',{ retry: { count: 3, delay: 1000 }}).then(res => {
+        //   console.log('retry')
+        //   console.log(res)
+        // })
+          // apis.getPostComments({ polling: {
+          //   delay: 5 * 1000,
+          // } }).then(res => {
+          //   console.log('polling')
+          //   console.log(res)
+          // })
+
+
+        // apis.getUser({ prevCancel: true })
+        // apis.getUser({ prevCancel: true })
+        // apis.getUser({ prevCancel: true })
+        }
+    }
+  }
+
+  createApp({ App }).mount()
+</script>
+
+<!-- v-scope value can be omitted -->
+<div v-scope="App({ count: 100 })" @vue:mounted="mounted">
+  <p>{{ count }}</p>
+</div>
+</body>
+</html>

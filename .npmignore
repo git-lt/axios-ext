@@ -1,0 +1,10 @@
+__tests__
+.temp
+.github
+
+__tests__/
+coverage/
+scripts/
+src/
+tsconfig.json
+package-lock.json
