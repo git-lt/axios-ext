@@ -2,7 +2,7 @@ import type { AxiosInstance, AxiosRequestConfig, Method, AxiosPromise } from 'ax
 
 const REQUEST_HEADERS = {
   form: { "Content-Type": "application/x-www-form-urlencoded" },
-  json: { "Content-Type": "application/json" },
+  json: { "Content-Type": "application/json;charset=utf-8" },
 };
 
 export type RequestDataType = "json" | "form";
@@ -75,7 +75,7 @@ function transfromToRequest(axios: AxiosInstance, methodUrl: string | [Partial<R
  */
 export default function registApi<
   ApiConfig,
-  R extends { [P in keyof ApiConfig]: ApiConfig[P] extends Function ? TransFnApiResult : TransApiResult }
+  R extends { [P in keyof ApiConfig]: ApiConfig[P] extends (...params: infer U) => any ? (...params: U) => TransApiResult  : TransApiResult }
 >(axiosInstance: AxiosInstance, options: RegistApiOption) {
   const { apiConfig, prefix = ''} = options;
 
@@ -109,7 +109,7 @@ export default function registApi<
  * @param config 
  * @returns 
  */
-export function withConfig(config:Partial<RequestConfig> ){
+export function withConfig(config:Partial<RequestConfig>){
   return (strArr:string[], ...values:string[]) => {
     return (params:any={}) => {
       const reqPath = strArr.reduce((p,n) => {

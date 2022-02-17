@@ -29,7 +29,7 @@ export declare type TransFnApiResult = (...params: any[]) => TransApiResult;
  * @returns apis
  */
 export default function registApi<ApiConfig, R extends {
-    [P in keyof ApiConfig]: ApiConfig[P] extends Function ? TransFnApiResult : TransApiResult;
+    [P in keyof ApiConfig]: ApiConfig[P] extends (...params: infer U) => any ? (...params: U) => TransApiResult : TransApiResult;
 }>(axiosInstance: AxiosInstance, options: RegistApiOption): R;
 /**
  * 用于在定义API时，预定义一些 axios 的配置，或覆盖全局配置

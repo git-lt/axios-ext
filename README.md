@@ -80,7 +80,8 @@ axios.get('/api/users', { retry: true })
 const apiConfig = {
     getUser: 'get /user',
     createUser: 'post /user',
-    deleteUser: id => `delete /user/${id}`
+    deleteUser: id => `delete /user/${id}`,
+    updateUser: withConfig({dataType: 'form'})`post /user/${'id'}`
 }
 
 // api 注册
