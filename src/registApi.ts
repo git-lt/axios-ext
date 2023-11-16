@@ -74,9 +74,9 @@ function transfromToRequest(axios: AxiosInstance, methodUrl: string | [Partial<R
  * @returns apis
  */
 export default function registApi<
-  ApiConfig,
-  R extends { [P in keyof ApiConfig]: ApiConfig[P] extends (...params: infer U) => any ? (...params: U) => TransApiResult  : TransApiResult }
->(axiosInstance: AxiosInstance, options: RegistApiOption) {
+  T extends RegistApiOption,
+  R extends { [P in keyof T['apiConfig']]: T['apiConfig'][P] extends (...params: infer U) => any ? (...params: U) => TransApiResult  : TransApiResult }
+>(axiosInstance: AxiosInstance, options: T):R {
   const { apiConfig, prefix = ''} = options;
 
   const result: Record<string, TransResult> = {};
@@ -121,4 +121,3 @@ export function withConfig(config:Partial<RequestConfig>){
     }
   }
 }
-

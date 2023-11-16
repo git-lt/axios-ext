@@ -12,7 +12,7 @@ interface LoadingConfig extends Required<LoadingOption> {
 export default function axiosLoading(axiosInstance: AxiosInstance, options?: LoadingOption): void;
 declare module 'axios' {
     interface AxiosRequestConfig {
-        loading?: LoadingOption;
+        loading?: boolean | LoadingOption;
         [namespace]?: LoadingConfig;
     }
 }

@@ -1,6 +1,6 @@
 {
   "name": "@mtjs/axios-ext",
-  "version": "0.0.2",
+  "version": "0.0.9",
   "description": "axios extensions",
   "main": "lib/index.js",
   "module": "es/index.js",

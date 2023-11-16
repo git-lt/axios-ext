@@ -11,6 +11,7 @@ const defaultOptions = {
 function catchErrorHandler(error:AxiosError, options:CatchErrorOption){
   const { config } = error;
   if(!config || !config.catchError) return Promise.reject(error);
+  // 取消支持本地handler配置
   if(typeof config.catchError !== 'boolean' && config.catchError.handler){
      return config.catchError.handler(error)
   }

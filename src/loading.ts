@@ -57,6 +57,7 @@ export default function axiosLoading(axiosInstance: AxiosInstance, options: Load
     return config;
   })
   axiosInstance.interceptors.response.use(response => {
+    if(!response || !response.config) return response;
     const loadingOptions = response.config[namespace];
     if(!loadingOptions) return response;
 
@@ -75,7 +76,7 @@ export default function axiosLoading(axiosInstance: AxiosInstance, options: Load
 
 declare module 'axios' {
   export interface AxiosRequestConfig {
-    loading?: LoadingOption;
+    loading?: boolean | LoadingOption;
     [namespace]?: LoadingConfig;
   }
 }

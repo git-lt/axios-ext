@@ -1,13 +1,6 @@
-import jwtHeader from './jwtHeader'
-import loading from './loading'
-import prevCancel from './prevCancel'
-import registApi from './registApi'
-import retry from './retry'
-import catchError from './catchError'
-
-export const axiosJWTHeader = jwtHeader;
-export const axiosLoading = loading;
-export const axiosPrevCancel = prevCancel;
-export const axiosRegistApi = registApi;
-export const axiosRetry = retry;
-export const axiosCatchError = catchError;
+export { default as axiosJWTHeader} from './jwtHeader'
+export { default as axiosLoading} from './loading'
+export { default as axiosPrevCancel} from './prevCancel'
+export { default as axiosRegistApi} from './registApi'
+export { default as axiosRetry} from './retry'
+export { default as axiosCatchError} from './catchError'

@@ -38,7 +38,7 @@ export default function axiosJWTHeader(axiosInstance: AxiosInstance, options: JW
     return config;
   })
   axiosInstance.interceptors.response.use((response) => {
-    if(response.headers){
+    if(response && response.headers){
       const newToken = response.headers[newTokenHeaderName];
       newToken && saveToken(newToken);
     }
